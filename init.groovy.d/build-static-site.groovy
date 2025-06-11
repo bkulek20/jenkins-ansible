@@ -69,7 +69,7 @@ if (jenkins != null) {
             terraform refresh
 
             set +e
-            terraform plan -detailed-exitcode -var-file="jenkins.auto.tfvars.json" -out=tfplan
+            terraform plan -detailed-exitcode -out=tfplan
 
             plan_exit_code=$?
             set -e
