@@ -17,3 +17,7 @@ output "jenkins_ec2_ip" {
 output "instance_profile" {
   value = aws_instance.example_instance.iam_instance_profile
 }
+
+output "instance_id" {
+  value = aws_instance.example_instance.id
+}
