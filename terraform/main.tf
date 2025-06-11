@@ -1,7 +1,7 @@
 resource "aws_key_pair" "bkulek_key" {
   key_name   = "bkulek-key"
   #public_key = file("~/.ssh/id_rsa.pub")
-  public_key = file("${path.module}/terraform/bkulek-key.pub")
+  public_key = file("${path.module}/bkulek-key.pub")
 
 
 }
@@ -37,7 +37,7 @@ resource "aws_launch_template" "example_server" {
             usermod -aG docker ec2-user
 
             cd /home/ec2-user
-            git clone --branch jenkins-auto https://github.com/bkulek20/jenkins-ansible.git
+            git clone --branch main https://github.com/bkulek20/jenkins-ansible.git
             cd jenkins-ansible
 
 
@@ -150,7 +150,7 @@ resource "aws_security_group" "jenkins_sg" {
 
 
 resource "aws_iam_role" "jenkins_terraform_role" {
-  name = "jenkins-terraform-role"
+  name = "jenkins-terraform-role-${var.environment_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",

@@ -20,7 +20,7 @@ if (jenkins != null) {
 
         def gitSCM = new GitSCM(
             [new UserRemoteConfig("https://github.com/bkulek20/jenkins-ansible.git", null, null, null)],
-            [new BranchSpec("*/jenkins-auto")],
+            [new BranchSpec("*/main")],
             false, Collections.emptyList(), null, null, Collections.emptyList()
         )
         job.setScm(gitSCM)
