@@ -42,7 +42,9 @@ resource "aws_launch_template" "example_server" {
 
 
             sleep 15
-            docker build --build-arg DOCKER_GID=$(getent group docker | cut -d: -f3) -t myjenkins .
+            
+            docker build -f ../Dockerfile --build-arg DOCKER_GID=$(getent group docker | cut -d: -f3) -t myjenkins ..
+
 
             docker stop jenkins || true
             docker rm jenkins || true
@@ -67,7 +69,7 @@ resource "aws_launch_template" "example_server" {
 
   tags = {
     Name = "bkulek-bootcamp-${var.environment_name}"
-    expire_at  = "2025-06-07T20:00:00Z"  # UTC formatta TTL değeri
+    expire_at  = "2025-06-12T20:00:00Z"  # UTC formatta TTL değeri
   }
 
 
