@@ -35,7 +35,7 @@ if (jenkins != null) {
             echo "Template: $template_type"
             echo "TTL: $ttl"
 
-            cd terraform
+            cd "$WORKSPACE/terraform"
 
             terraform init
             terraform refresh
