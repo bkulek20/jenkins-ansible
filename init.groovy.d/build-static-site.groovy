@@ -30,7 +30,6 @@ if (jenkins != null) {
 
             which aws || echo "AWS CLI not found"
 
-            # Jenkins parametrelerini shell ortamına aktar
             export env_name="$env_name"
             export instance_type="$instance_type"
             export template_type="$template_type"
@@ -44,18 +43,8 @@ if (jenkins != null) {
             echo "Workspace içerikleri:"
             ls -la "$WORKSPACE"
 
-
-            cd "$WORKSPACE/terraform" || { echo "Terraform klasörüne girilemedi"; exit 1; }
-            echo "PWD: $(pwd)"
-
-            echo "Terraform içerikleri:"
-            ls -la "$WORKSPACE/terraform"
-
-            echo "Şu anki dizin:"
-            pwd
-
-            echo "jenkins.auto.tfvars.json oluşturuluyor..."
-            cat <<EOF > jenkins.auto.tfvars.json
+            echo "terraform.tfvars.json oluşturuluyor..."
+            cat <<EOF > "$WORKSPACE/terraform/terraform.tfvars.json"
             {
             "environment_name": "$env_name",
             "instance_type": "$instance_type",
@@ -64,13 +53,14 @@ if (jenkins != null) {
             }
             EOF
 
+            cd "$WORKSPACE/terraform" || { echo "Terraform klasörüne girilemedi"; exit 1; }
 
+            rm -rf .terraform .terraform.lock.hcl
             terraform init
             terraform refresh
 
             set +e
             terraform plan -detailed-exitcode -out=tfplan
-
             plan_exit_code=$?
             set -e
 
@@ -96,10 +86,10 @@ if (jenkins != null) {
             cd ../ansible
             ansible-playbook -i inventory.ini "$template_type.yml"
 
-            echo "Temizlik: jenkins.auto.tfvars.json siliniyor..."
-            rm -f "$WORKSPACE/terraform/jenkins.auto.tfvars.json"
-
+            echo "Temizlik: terraform.tfvars.json siliniyor..."
+            rm -f "$WORKSPACE/terraform/terraform.tfvars.json"
             ''')
+
 
 
         job.getBuildersList().add(shell)
