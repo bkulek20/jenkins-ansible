@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="main.css">
+    </head>
+<body>
+
+    <h1>Hosting a Portfolio Site on AWS EC2 with NGINX</h1>
+
+    <a href="https://bkulek20.github.io/bootcamp-site/index.html" style="color: rgb(147,187,68); ">Home</a>
+
+    <br><br>
+    
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; font-size: 16px; color: #333;">
+        <h2>In this post, I’ll walk through how I deployed my personal portfolio site on an AWS EC2 instance using NGINX.</h2>
+      
+        <h3>1. Launching a Linux EC2 Instance</h3>
+        <p>
+          I launched a new EC2 instance named <strong>nginx-test2</strong> in the <strong>eu-west-1</strong> region.<br>
+          By default, AWS placed the instance in a private subnet within the default VPC.<br>
+          Although a public IP was assigned, there was no route to an Internet Gateway (IGW) in the subnet’s route table — meaning the instance had no outbound internet access.<br>
+          Thus, I cannot connect my EC2 instance.
+        </p>
+        <p><u>To resolve this:</u></p>
+        <ul>
+          <li>I created a new Internet Gateway (IGW).</li>
+          <li>Updated the Route Table to direct <code>0.0.0.0/0</code> traffic to the IGW.</li>
+          <li>Created a new public subnet and associated it with this route table.</li>
+          <li>Launched my EC2 instance within this new public subnet.</li>
+        </ul>
+        <p>Once launched, I was able to connect without issues.</p>
+      
+        <h3>2. Taking a Snapshot After Installation</h3>
+        <p>
+          To preserve the clean, post-install state of my EC2 instance, I took a snapshot of its EBS volume:
+        </p>
+        <ul>
+          <li>Navigated to <strong>EC2 &gt; Elastic Block Store &gt; Volumes</strong></li>
+          <li>Selected the volume and clicked <strong>Actions &gt; Create Snapshot</strong></li>
+        </ul>
+        <p>This snapshot (named <code>nginx-ss-bkulek</code>) allows me to recreate identical EC2 instances anytime via “Create Volume” &gt; “Launch instance from volume.”</p>
+      
+        <h3>3. Restricting SSH Access to My IP</h3>
+        <!-- <p>For security, I locked down SSH access:</p>
+        <ul>
+          <li>Went to <strong>Security Groups &gt; Edit Inbound Rules</strong></li>
+          <li>Changed the SSH rule’s source from <code>0.0.0.0/0</code> to my own IP (<code>163.116.166.153/32</code>)</li>
+        </ul>
+        <p>Now, only my IP can access port 22 on this server.</p> -->
+      
+        <h3>4. Installing a Web Server</h3>
+        <p>I installed NGINX on my Amazon Linux instance:</p>
+        <pre>
+      sudo yum -y update
+      sudo yum -y install nginx
+      sudo systemctl start nginx
+      sudo systemctl enable nginx
+        </pre>
+        <p>Then I visited <a href="http://54.229.246.19" target="_blank">http://54.229.246.19</a> (my instance’s public IP), and saw the NGINX welcome page — success!</p>
+      
+        <h3>5. Hosting My Portfolio Website</h3>
+        <p>I cloned my GitHub repository and copied it to the NGINX root directory:</p>
+        <pre>
+      sudo yum install git -y
+      cd /tmp
+      git clone https://github.com/bkulek20/MyPortfolio2.git
+      sudo cp -r MyPortfolio2/* /usr/share/nginx/html/
+      sudo systemctl restart nginx
+        </pre>
+        <p>Then, I could see my portfolio website live.</p>
+      
+        <h3>6. Blocking Access to /admin Page</h3>
+        <p>To restrict access to /admin, I edited the NGINX configuration:</p>
+        <pre>
+      sudo nano /etc/nginx/nginx.conf
+        </pre>
+        <p>Inside the <code>server { ... }</code> block, I added:</p>
+        <pre>
+      location /admin {
+          allow 163.116.166.153;
+          deny all;
+      }
+        </pre>
+        <pre>
+      sudo systemctl reload nginx
+        </pre>
+        <p>Only my IP could access /admin.</p>
+      
+        <h3>7. Monitoring CPU, Memory, and Process Usage</h3>
+        <p>Before and after installing NGINX, I checked system resource usage.</p>
+        <p><strong>CPU + Memory Summary:</strong></p>
+        <pre>
+      top -n 1 | head -10
+      # Before: CPU usage was 0%, system was idle
+      # After: CPU usage was increased to 5.9%, which means nginx starts to use cpu.
+        </pre>
+      
+        <p><strong>RAM Usage:</strong></p>
+        <pre>
+      free -m
+      # RAM usage increased after NGINX installation (from 148MB to 161MB)
+        </pre>
+      
+        <p><strong>Top RAM-consuming Processes:</strong></p>
+        <pre>
+      ps aux --sort=-%mem | head
+      # NGINX didn’t even make the top 10 — it’s lightweight.
+        </pre>
+      
+        <h3>8. Viewing Access and Error Logs</h3>
+        <p>To verify live site activity and debug errors, I used:</p>
+        <pre>
+      sudo tail -f /var/log/nginx/access.log
+      sudo tail -f /var/log/nginx/error.log
+        </pre>
+        <p>
+          <strong>Access Log:</strong> Confirmed the last site visit timestamp<br>
+          <strong>Error Log:</strong> Logs if any error occurs
+        </p>
+      
+        <h3>Conclusion</h3>
+        <p>
+          From subnet routing to secure access and resource monitoring — 
+          this setup gave me full control over how my portfolio site is deployed and served.
+        </p>
+    </div>
+      
+
+    <br><br>
+
+
+    <script src="app.js"></script>
+</body>
+</html>
+

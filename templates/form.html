@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ortam Oluştur</title>
+</head>
+<body>
+    <h1>Yeni Ortam Oluştur</h1>
+    <form method="post">
+        <label>Environment Name:</label>
+        <input type="text" name="env_name" required><br><br>
+
+        <label>Instance Type:</label>
+        <input type="text" name="instance_type" value="t3.micro"><br><br>
+
+        <label>Template Type:</label>
+        <select name="template_type">
+            <option value="web">Web Server</option>
+            <option value="db">Database</option>
+            <option value="full">Full Stack (Web + DB)</option>
+        </select><br><br>
+
+        <label>TTL (örnek: 2025-06-07T21:00:00Z):</label>
+        <input type="text" name="ttl"><br><br>
+
+        <button type="submit">Oluştur</button>
+    </form>
+</body>
+</html>

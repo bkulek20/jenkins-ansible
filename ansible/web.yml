@@ -1,0 +1,30 @@
+- hosts: web
+  become: true
+  tasks:
+    - name: Nginx kur
+      apt:
+        name: nginx
+        update_cache: yes
+        state: present
+
+    - name: Web dosyalarını rsync ile kopyala
+      synchronize:
+        src: "{{ playbook_dir }}/../"
+        dest: /var/www/html/
+        recursive: yes
+        delete: no
+        rsync_opts:
+          - "--exclude=.terraform"
+          - "--exclude=.git"
+          - "--exclude=__pycache__"
+          - "--exclude=ansible"
+          - "--exclude=*.tf"
+          - "--exclude=*.py"
+          - "--exclude=*.yml"
+          - "--exclude=*.yaml"
+          - "--exclude=*.conf"
+          - "--exclude=*.tfstate*"
+          - "--exclude=Dockerfile"
+          - "--exclude=plugins.txt"
+          - "--exclude=lambda_function.py"
+          - "--exclude=flask_app.py"

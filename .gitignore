@@ -1,0 +1,9 @@
+.terraform/
+*.tfstate
+*.tfstate.backup
+crash.log
+.tf
+terraform/bkulek-key.pem
+*.pem
+*.key
+terraform.tfvars.json
