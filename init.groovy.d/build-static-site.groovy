@@ -30,6 +30,12 @@ if (jenkins != null) {
 
             which aws || echo "AWS CLI not found"
 
+            # Jenkins parametrelerini shell ortamına aktar
+            export env_name="$env_name"
+            export instance_type="$instance_type"
+            export template_type="$template_type"
+            export ttl="$ttl"
+
             echo "Provisioning environment: $env_name"
             echo "Instance Type: $instance_type"
             echo "Template: $template_type"
@@ -48,12 +54,23 @@ if (jenkins != null) {
             echo "Şu anki dizin:"
             pwd
 
+            echo "jenkins.auto.tfvars.json oluşturuluyor..."
+            cat <<EOF > jenkins.auto.tfvars.json
+            {
+            "environment_name": "$env_name",
+            "instance_type": "$instance_type",
+            "template_type": "$template_type",
+            "ttl": "$ttl"
+            }
+            EOF
+
 
             terraform init
             terraform refresh
 
             set +e
-            terraform plan -detailed-exitcode -var="environment_name=$env_name" -var="instance_type=$instance_type" -var="ttl=$ttl" -out=tfplan
+            terraform plan -detailed-exitcode -var-file="jenkins.auto.tfvars.json" -out=tfplan
+
             plan_exit_code=$?
             set -e
 
@@ -78,6 +95,10 @@ if (jenkins != null) {
 
             cd ../ansible
             ansible-playbook -i inventory.ini "$template_type.yml"
+
+            echo "Temizlik: jenkins.auto.tfvars.json siliniyor..."
+            rm -f "$WORKSPACE/terraform/jenkins.auto.tfvars.json"
+
             ''')
 
 
