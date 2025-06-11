@@ -43,7 +43,8 @@ resource "aws_launch_template" "example_server" {
 
             sleep 15
             
-            docker build -f ../Dockerfile --build-arg DOCKER_GID=$(getent group docker | cut -d: -f3) -t myjenkins ..
+
+            docker build --build-arg DOCKER_GID=$(getent group docker | cut -d: -f3) -t myjenkins .
 
 
             docker stop jenkins || true
