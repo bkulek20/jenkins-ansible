@@ -30,6 +30,11 @@ resource "aws_launch_template" "example_server" {
             exec > /var/log/user-data.log 2>&1
             set -x
 
+
+            yum install -y amazon-ssm-agent
+            systemctl enable amazon-ssm-agent
+            systemctl start amazon-ssm-agent
+
             yum update -y
             yum install -y git docker
             systemctl start docker
@@ -167,6 +172,7 @@ resource "aws_iam_role" "jenkins_terraform_role" {
     
   })
 }
+
 
 resource "aws_iam_role_policy" "jenkins_inline_policy" {
   name = "jenkins-inline-policy"
