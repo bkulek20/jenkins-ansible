@@ -37,7 +37,9 @@ COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 
  # Ansible ve AWS Python SDK modülleri
-RUN pip3 install boto3 botocore
+
+RUN pip3 install --break-system-packages boto3 botocore
+
 
 # community.aws koleksiyonunu yükle
 RUN ansible-galaxy collection install community.aws
