@@ -44,14 +44,14 @@ if (jenkins != null) {
             ls -la "$WORKSPACE"
 
             echo "terraform.tfvars.json oluşturuluyor..."
-            cat <<EOF > "$WORKSPACE/terraform/terraform.tfvars.json"
-            {
-            "environment_name": "$env_name",
-            "instance_type": "$instance_type",
-            "template_type": "$template_type",
-            "ttl": "$ttl"
-            }
-            EOF
+cat <<EOF > "$WORKSPACE/terraform/terraform.tfvars.json"
+{
+"environment_name": "$env_name",
+"instance_type": "$instance_type",
+"template_type": "$template_type",
+"ttl": "$ttl"
+}
+EOF
 
             cd "$WORKSPACE/terraform" || { echo "Terraform klasörüne girilemedi"; exit 1; }
 
