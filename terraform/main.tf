@@ -37,8 +37,8 @@ resource "aws_launch_template" "example_server" {
             usermod -aG docker ec2-user
 
             cd /home/ec2-user
-            git clone --branch jenkins-auto https://github.com/bkulek20/bootcamp-site.git
-            cd bootcamp-site
+            git clone --branch jenkins-auto https://github.com/bkulek20/jenkins-automated.git
+            cd jenkins-automated
 
 
             sleep 15
@@ -51,7 +51,7 @@ resource "aws_launch_template" "example_server" {
             --name jenkins \
             --network host \
             -v jenkins_home:/var/jenkins_home \
-            -v /home/ec2-user/bootcamp-site/casc_configs/jenkins.yaml:/var/jenkins_home/jenkins.yaml \
+            -v /home/ec2-user/jenkins-automated/casc_configs/jenkins.yaml:/var/jenkins_home/jenkins.yaml \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -v /home/ec2-user/.ssh/id_rsa:/root/.ssh/id_rsa \
             -e CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml \
