@@ -35,7 +35,19 @@ if (jenkins != null) {
             echo "Template: $template_type"
             echo "TTL: $ttl"
 
-            cd "$WORKSPACE/jenkins-ansible/terraform"
+            echo "Workspace içerikleri:"
+            ls -la "$WORKSPACE"
+
+
+            cd "$WORKSPACE/terraform" || { echo "Terraform klasörüne girilemedi"; exit 1; }
+            echo "PWD: $(pwd)"
+
+            echo "Terraform içerikleri:"
+            ls -la "$WORKSPACE/terraform"
+
+            echo "Şu anki dizin:"
+            pwd
+
 
             terraform init
             terraform refresh
