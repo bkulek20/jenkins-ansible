@@ -62,6 +62,8 @@ EOF
             echo "Mevcut kaynaklar import ediliyor (eğer önceden oluşturulmuşsa)..."
             terraform import aws_key_pair.bkulek_key bkulek-key || true
             terraform import aws_iam_instance_profile.jenkins_profile jenkins-instance-profile || true
+            terraform import aws_iam_role.jenkins_terraform_role jenkins-terraform-role-$env_name || true
+
 
 
             terraform refresh
