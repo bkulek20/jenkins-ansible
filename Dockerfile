@@ -22,6 +22,8 @@ RUN wget https://releases.hashicorp.com/terraform/1.6.6/terraform_1.6.6_linux_am
 RUN apt-get update && \
     apt-get install -y ansible
 
+# Python ve pip kurulumu (pip olmadan boto3 kurulamaz)
+RUN apt-get install -y python3 python3-pip
 
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
@@ -35,7 +37,7 @@ COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 
  # Ansible ve AWS Python SDK modülleri
-RUN pip install boto3 botocore
+RUN pip3 install boto3 botocore
 
 # community.aws koleksiyonunu yükle
 RUN ansible-galaxy collection install community.aws
