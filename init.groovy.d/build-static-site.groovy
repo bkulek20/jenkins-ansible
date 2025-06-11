@@ -25,7 +25,8 @@ if (jenkins != null) {
         )
         job.setScm(gitSCM)
 
-        def shell = new Shell('''
+        def shell = new Shell('''#!/bin/bash
+            set -e
 
             which aws || echo "AWS CLI not found"
 
@@ -39,7 +40,6 @@ if (jenkins != null) {
             terraform init
             terraform refresh
 
-            # Terraform plan ve apply
             set +e
             terraform plan -detailed-exitcode -var="environment_name=$env_name" -var="instance_type=$instance_type" -var="ttl=$ttl" -out=tfplan
             plan_exit_code=$?
@@ -49,36 +49,25 @@ if (jenkins != null) {
             cat plan_output.txt
 
             if [ $plan_exit_code -eq 2 ]; then
-                echo "Terraform apply yapılıcak"
+                echo "Terraform apply yapılıyor..."
                 terraform apply -auto-approve tfplan
             elif [ $plan_exit_code -eq 0 ]; then
-                echo "Terraform apply yok"
+                echo "Değişiklik yok, apply yapılmayacak."
             else
                 echo "Terraform plan hatası. Exit code: $plan_exit_code"
                 exit $plan_exit_code
             fi
 
             EC2_PUBLIC_IP=$(terraform output -raw public_ip)
-
             echo "EC2 Public IP: $EC2_PUBLIC_IP"
 
+            echo "[web]" > ../ansible/inventory.ini
+            echo "$EC2_PUBLIC_IP" >> ../ansible/inventory.ini
 
+            cd ../ansible
+            ansible-playbook -i inventory.ini "$template_type.yml"
+            ''')
 
-            echo "[web]" > ansible/inventory.ini
-
-
-      
-
-
-            cd ansible
-            ansible-playbook -i inventory.ini $template_type.yml
-
-       
-
-            exit 0
-
-          
-        ''')
 
         job.getBuildersList().add(shell)
         job.save()
