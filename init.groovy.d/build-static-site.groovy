@@ -19,7 +19,7 @@ if (jenkins != null) {
         ))
 
         def gitSCM = new GitSCM(
-            [new UserRemoteConfig("https://github.com/bkulek20/bootcamp-site.git", null, null, null)],
+            [new UserRemoteConfig("https://github.com/bkulek20/jenkins-ansible.git", null, null, null)],
             [new BranchSpec("*/jenkins-auto")],
             false, Collections.emptyList(), null, null, Collections.emptyList()
         )
