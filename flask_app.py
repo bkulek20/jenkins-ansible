@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 jenkins_ip = subprocess.check_output(
     ["terraform", "output", "-raw", "jenkins_ec2_ip"],
+    cwd="./terraform" 
 ).decode().strip()
 
 JENKINS_URL = f"http://{jenkins_ip}:8080/job/build-static-site/buildWithParameters"
