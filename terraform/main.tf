@@ -58,6 +58,7 @@ resource "aws_launch_template" "example_server" {
             docker run -d \
             --name jenkins \
             --network host \
+            -v /usr/local/bin:/usr/local/bin \
             -v jenkins_home:/var/jenkins_home \
             -v /home/ec2-user/jenkins-ansible/casc_configs/jenkins.yaml:/var/jenkins_home/jenkins.yaml \
             -v /var/run/docker.sock:/var/run/docker.sock \

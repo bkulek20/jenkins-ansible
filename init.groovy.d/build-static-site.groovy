@@ -93,6 +93,12 @@ EOF
             echo "[web]" > ../ansible/inventory.ini
             echo "$INSTANCE_ID" >> ../ansible/inventory.ini
 
+            echo "PATH: $PATH"
+            which aws
+            which session-manager-plugin
+            session-manager-plugin --version || echo "plugin erişilemiyor"
+
+
             cd ../ansible
             ansible-playbook -i inventory.ini "$template_type.yml"
 
