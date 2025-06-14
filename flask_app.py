@@ -25,7 +25,7 @@ def index():
         ttl = request.form["ttl"]
 
 
-        with open("terraform.tfvars.json", "w") as f:
+        with open("./terraform/terraform.tfvars.json", "w") as f:
             json.dump({
                 "environment_name": env_name,
                 "instance_type": instance_type,
