@@ -173,6 +173,15 @@ resource "aws_iam_role" "jenkins_terraform_role" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "ssm" {
+  role       = aws_iam_role.jenkins_terraform_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "ssm" {
+  role       = aws_iam_role.jenkins_terraform_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
+}
 
 resource "aws_iam_role_policy" "jenkins_inline_policy" {
   name = "jenkins-inline-policy"
@@ -235,10 +244,7 @@ resource "aws_iam_role_policy_attachment" "vpc" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
 }
 
-resource "aws_iam_role_policy_attachment" "ssm" {
-  role       = aws_iam_role.jenkins_terraform_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
-}
+
 
 resource "aws_iam_instance_profile" "jenkins_profile" {
   name = "jenkins-instance-profile"
