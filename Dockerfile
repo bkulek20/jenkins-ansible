@@ -30,9 +30,6 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     ./aws/install && \
     rm -rf awscliv2.zip aws
 
-
-
-
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 
@@ -43,6 +40,9 @@ RUN pip3 install --break-system-packages boto3 botocore
 
 # community.aws koleksiyonunu yükle
 RUN ansible-galaxy collection install community.aws
+
+RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "ssm-plugin.deb" && \
+    dpkg -i ssm-plugin.deb
 
 COPY casc_configs/ /var/jenkins_home/casc_configs/
 COPY init.groovy.d/ /var/jenkins_home/init.groovy.d/
