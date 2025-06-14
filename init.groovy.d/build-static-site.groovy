@@ -35,6 +35,10 @@ if (jenkins != null) {
             export template_type="$template_type"
             export ttl="$ttl"
 
+            export AWS_REGION=eu-central-1
+            export AWS_DEFAULT_REGION=eu-central-1
+
+
             echo "Provisioning environment: $env_name"
             echo "Instance Type: $instance_type"
             echo "Template: $template_type"
