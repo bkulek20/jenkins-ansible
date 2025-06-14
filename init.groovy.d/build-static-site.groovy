@@ -100,7 +100,7 @@ EOF
 
 
             cd ../ansible
-            ansible-playbook -i inventory.ini "$template_type.yml"
+            ansible-playbook -vvv -i inventory.ini "$template_type.yml" 
 
             echo "Temizlik: terraform.tfvars.json siliniyor..."
             rm -f "$WORKSPACE/terraform/terraform.tfvars.json"
