@@ -91,7 +91,7 @@ EOF
 
             INSTANCE_ID=$(terraform output -raw instance_id)
             echo "[web]" > ../ansible/inventory.ini
-            echo "$INSTANCE_ID" >> ../ansible/inventory.ini
+            echo "$INSTANCE_ID ansible_connection=aws_ssm" >> ../ansible/inventory.ini
 
             echo "PATH: $PATH"
             which aws
