@@ -89,8 +89,9 @@ EOF
             EC2_PUBLIC_IP=$(terraform output -raw public_ip)
             echo "EC2 Public IP: $EC2_PUBLIC_IP"
 
+            INSTANCE_ID=$(terraform output -raw instance_id)
             echo "[web]" > ../ansible/inventory.ini
-            echo "$EC2_PUBLIC_IP" >> ../ansible/inventory.ini
+            echo "$INSTANCE_ID" >> ../ansible/inventory.ini
 
             cd ../ansible
             ansible-playbook -i inventory.ini "$template_type.yml"
