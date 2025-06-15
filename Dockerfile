@@ -20,7 +20,7 @@ RUN wget https://releases.hashicorp.com/terraform/1.6.6/terraform_1.6.6_linux_am
     rm terraform_1.6.6_linux_amd64.zip
 
 RUN apt-get update && \
-    apt-get install -y ansible=2.15.8
+    apt-get install -y ansible=2.15.*
 
 # Python ve pip kurulumu (pip olmadan boto3 kurulamaz)
 RUN apt-get install -y python3 python3-pip
