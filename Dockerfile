@@ -20,7 +20,8 @@ RUN wget https://releases.hashicorp.com/terraform/1.6.6/terraform_1.6.6_linux_am
     rm terraform_1.6.6_linux_amd64.zip
 
 RUN apt-get update && \
-    apt-get install -y ansible=2.15.*
+    apt-get install -y ansible
+
 
 # Python ve pip kurulumu (pip olmadan boto3 kurulamaz)
 RUN apt-get install -y python3 python3-pip
@@ -42,6 +43,7 @@ RUN pip3 install --break-system-packages boto3 botocore
 #RUN ansible-galaxy collection install community.aws
 RUN ansible-galaxy collection install community.aws -p /usr/share/ansible/collections
 
+RUN ansible-galaxy collection uninstall amazon.aws:5.5.1
 
 
 
