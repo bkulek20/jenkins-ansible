@@ -7,3 +7,4 @@ terraform/bkulek-key.pem
 *.pem
 *.key
 terraform.tfvars.json
+bkulek-key.pub

@@ -20,7 +20,7 @@ RUN wget https://releases.hashicorp.com/terraform/1.6.6/terraform_1.6.6_linux_am
     rm terraform_1.6.6_linux_amd64.zip
 
 RUN apt-get update && \
-    apt-get install -y ansible
+    apt-get install -y ansible==2.15.8
 
 # Python ve pip kurulumu (pip olmadan boto3 kurulamaz)
 RUN apt-get install -y python3 python3-pip
@@ -41,6 +41,8 @@ RUN pip3 install --break-system-packages boto3 botocore
 # community.aws koleksiyonunu yükle
 #RUN ansible-galaxy collection install community.aws
 RUN ansible-galaxy collection install community.aws -p /usr/share/ansible/collections
+
+
 
 
 RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "ssm-plugin.deb" && \
