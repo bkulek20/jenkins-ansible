@@ -38,6 +38,9 @@ if (jenkins != null) {
             export AWS_REGION=eu-central-1
             export AWS_DEFAULT_REGION=eu-central-1
 
+            export ANSIBLE_CONFIG=/var/jenkins_home/workspace/build-static-site/ansible/ansible.cfg
+
+
 
             echo "Provisioning environment: $env_name"
             echo "Instance Type: $instance_type"
