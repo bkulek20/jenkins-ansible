@@ -39,7 +39,9 @@ RUN pip3 install --break-system-packages boto3 botocore
 
 
 # community.aws koleksiyonunu yükle
-RUN ansible-galaxy collection install community.aws
+#RUN ansible-galaxy collection install community.aws
+RUN ansible-galaxy collection install community.aws -p /usr/share/ansible/collections
+
 
 RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "ssm-plugin.deb" && \
     dpkg -i ssm-plugin.deb
