@@ -1,10 +1,10 @@
-resource "aws_key_pair" "bkulek_key" {
-  key_name   = "bkulek-key"
-  #public_key = file("~/.ssh/id_rsa.pub")
-  public_key = file("${path.module}/bkulek-key.pub")
+# resource "aws_key_pair" "bkulek_key" {
+#   key_name   = "bkulek-key"
+#   #public_key = file("~/.ssh/id_rsa.pub")
+#   public_key = file("${path.module}/bkulek-key.pub")
 
 
-}
+# }
 
 resource "aws_launch_template" "example_server" {
   image_id                    = "ami-02b7d5b1e55a7b5f1" #eu-central-1
