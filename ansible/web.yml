@@ -18,6 +18,7 @@
         src: ../static-site.tar.gz
         dest: /tmp/static-site.tar.gz
       delegate_to: localhost
+      connection: local
 
     - name: Web içeriğini çıkar
       unarchive:
