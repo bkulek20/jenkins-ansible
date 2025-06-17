@@ -116,6 +116,35 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = ["163.116.166.153/32"]  # 
   }
 
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["163.116.166.153/32"] 
+  }
+
+
+  ingress {
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["163.116.166.153/32"] 
+  }
+
+   ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["163.116.166.153/32"] 
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["163.116.166.153/32"] 
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
