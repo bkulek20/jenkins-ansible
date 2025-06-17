@@ -107,7 +107,8 @@ EOF
 
             # 📦 Web dosyalarını arşivle
             echo "Web dosyaları arşivleniyor..."
-            tar -czf ../static-site.tar.gz static-site
+            tar -czf ../../static-site.tar.gz -C ../ static-site
+
  
             cd ../ansible
             ansible-playbook -vvv -i inventory.ini "$template_type.yml" 
