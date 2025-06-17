@@ -1,11 +1,22 @@
-- hosts: web
+# 🔸 Web arşivini önce localhost'tan EC2'ye göndermek için ayrı bir play
+- name: Web arşivini EC2'ye kopyala (lokalden)
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Web arşivini EC2'ye kopyala
+      copy:
+        src: ../static-site.tar.gz
+        dest: /tmp/static-site.tar.gz
+
+- name: EC2'de nginx kurulumu ve web içeriğini çıkarma
+  hosts: web
   become: true
   vars:
     ansible_connection: amazon.aws.aws_ssm
-    # ansible_shell_type: powershell
     ansible_aws_ssm_bucket_name: bkulek-demo-jenkins
     ansible_aws_ssm_region: eu-central-1
     ansible_aws_ssm_timeout: 30
+
   tasks:
     - name: Nginx kur
       yum:
@@ -13,18 +24,39 @@
         update_cache: yes
         state: present
 
-    - name: Web arşivini EC2'ye kopyala
-      copy:
-        src: ../static-site.tar.gz
-        dest: /tmp/static-site.tar.gz
-      delegate_to: localhost
-      connection: local
-
     - name: Web içeriğini çıkar
       unarchive:
         src: /tmp/static-site.tar.gz
         dest: /var/www/html/
         remote_src: yes
+
+# - hosts: web
+#   become: true
+#   vars:
+#     ansible_connection: amazon.aws.aws_ssm
+#     # ansible_shell_type: powershell
+#     ansible_aws_ssm_bucket_name: bkulek-demo-jenkins
+#     ansible_aws_ssm_region: eu-central-1
+#     ansible_aws_ssm_timeout: 30
+#   tasks:
+#     - name: Nginx kur
+#       yum:
+#         name: nginx
+#         update_cache: yes
+#         state: present
+
+#     - name: Web arşivini EC2'ye kopyala
+#       copy:
+#         src: ../static-site.tar.gz
+#         dest: /tmp/static-site.tar.gz
+#       delegate_to: localhost
+#       connection: local
+
+#     - name: Web içeriğini çıkar
+#       unarchive:
+#         src: /tmp/static-site.tar.gz
+#         dest: /var/www/html/
+#         remote_src: yes
 
     # - name: Web dosyalarını rsync ile kopyala
     #   synchronize:
