@@ -105,6 +105,10 @@ EOF
             which session-manager-plugin
             session-manager-plugin --version || echo "plugin erişilemiyor"
 
+            # 📦 Web dosyalarını arşivle
+            echo "Web dosyaları arşivleniyor..."
+            tar -czf ../static-site.tar.gz -C ../jenkins-ansible static-site
+
 
             cd ../ansible
             ansible-playbook -vvv -i inventory.ini "$template_type.yml" 

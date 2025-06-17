@@ -13,24 +13,36 @@
         update_cache: yes
         state: present
 
-    - name: Web dosyalarını rsync ile kopyala
-      synchronize:
-        src: "{{ playbook_dir }}/../"
+    - name: Web arşivini EC2'ye kopyala
+      copy:
+        src: ../static-site.tar.gz
+        dest: /tmp/static-site.tar.gz
+      delegate_to: localhost
+
+    - name: Web içeriğini çıkar
+      unarchive:
+        src: /tmp/static-site.tar.gz
         dest: /var/www/html/
-        recursive: yes
-        delete: no
-        rsync_opts:
-          - "--exclude=.terraform"
-          - "--exclude=.git"
-          - "--exclude=__pycache__"
-          - "--exclude=ansible"
-          - "--exclude=*.tf"
-          - "--exclude=*.py"
-          - "--exclude=*.yml"
-          - "--exclude=*.yaml"
-          - "--exclude=*.conf"
-          - "--exclude=*.tfstate*"
-          - "--exclude=Dockerfile"
-          - "--exclude=plugins.txt"
-          - "--exclude=lambda_function.py"
-          - "--exclude=flask_app.py"
+        remote_src: yes
+
+    # - name: Web dosyalarını rsync ile kopyala
+    #   synchronize:
+    #     src: "{{ playbook_dir }}/../"
+    #     dest: /var/www/html/
+    #     recursive: yes
+    #     delete: no
+    #     rsync_opts:
+    #       - "--exclude=.terraform"
+    #       - "--exclude=.git"
+    #       - "--exclude=__pycache__"
+    #       - "--exclude=ansible"
+    #       - "--exclude=*.tf"
+    #       - "--exclude=*.py"
+    #       - "--exclude=*.yml"
+    #       - "--exclude=*.yaml"
+    #       - "--exclude=*.conf"
+    #       - "--exclude=*.tfstate*"
+    #       - "--exclude=Dockerfile"
+    #       - "--exclude=plugins.txt"
+    #       - "--exclude=lambda_function.py"
+    #       - "--exclude=flask_app.py"
