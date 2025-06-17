@@ -46,7 +46,8 @@ RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubunt
 # community.aws koleksiyonunu yükle
 #RUN ansible-galaxy collection install community.aws
 
-RUN ansible-galaxy collection uninstall amazon.aws
+
+RUN ansible-galaxy collection uninstall amazon.aws || true
 
 RUN ansible-galaxy collection install community.aws -p /usr/share/ansible/collections
 

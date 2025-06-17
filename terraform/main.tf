@@ -8,8 +8,8 @@
 
 resource "aws_launch_template" "example_server" {
   image_id                    = "ami-02b7d5b1e55a7b5f1" #eu-central-1
-  instance_type               = "t3.medium"
-  key_name                    = aws_key_pair.bkulek_key.key_name
+  instance_type               = "t3.medium" 
+  #key_name                    = aws_key_pair.bkulek_key.key_name
   vpc_security_group_ids      = [aws_security_group.jenkins_sg.id]
 
 
