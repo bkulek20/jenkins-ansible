@@ -5,7 +5,7 @@
   tasks:
     - name: Web arşivini EC2'ye kopyala
       copy:
-        src: ../static-site.tar.gz
+        src: ../../static-site.tar.gz
         dest: /tmp/static-site.tar.gz
 
 - name: EC2'de nginx kurulumu ve web içeriğini çıkarma
