@@ -2,7 +2,7 @@
   become: true
   vars:
     ansible_connection: amazon.aws.aws_ssm
-    ansible_shell_type: powershell
+    # ansible_shell_type: powershell
     ansible_aws_ssm_bucket_name: bkulek-demo-jenkins
     ansible_aws_ssm_region: eu-central-1
     ansible_aws_ssm_timeout: 30
