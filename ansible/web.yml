@@ -8,7 +8,7 @@
     ansible_aws_ssm_timeout: 30
   tasks:
     - name: Nginx kur
-      apt:
+      yum:
         name: nginx
         update_cache: yes
         state: present
