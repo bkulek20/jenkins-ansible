@@ -26,11 +26,11 @@
 
     - name: /var/www/html dizinini oluştur
       file:
-      path: /var/www/html
-      state: directory
-      owner: root
-      group: root
-      mode: '0755'
+        path: /var/www/html
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
 
     - name: Web içeriğini çıkar
       unarchive:
